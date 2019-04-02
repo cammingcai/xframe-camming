@@ -1,6 +1,7 @@
 package com.youth.xf.ui.demo;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -17,11 +18,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class XHttpActivity extends BaseActivity {
-
+    private static final String IMAGE_FILE_NAME = "dora_head_image.jpg";
+    private static final String CROP_IMAGE_FILE_NAME = "dora_crop_image.jpg";
+    private static String PATH = Environment.getExternalStorageDirectory()+"/aideadora/";//sd路径
     TextView text;
     private String URL_HOST = "http://192.168.11.237:8181";
 //    private String URL_HOST = "http://120.78.121.247:8090";
-    private String PHP_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjExLjI0OFwvYXBpXC91c2VyXC9sb2dpbiIsImlhdCI6MTU1NDEwNjU1NCwiZXhwIjoxNTU0MTkyOTU0LCJuYmYiOjE1NTQxMDY1NTQsImp0aSI6Ijd3YThyUEVKZ1oxRE9qVFUiLCJzdWIiOjExMiwicHJ2IjoiYjkxMjc5OTc4ZjExYWE3YmM1NjcwNDg3ZmZmMDFlMjI4MjUzZmU0OCJ9.1hgBItft7WPZbBB9Cj7UhWDJkTJ2el6SAmap8XsCsjI";
+    private String PHP_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjExLjE0XC9hcGlcL3VzZXJcL2xvZ2luIiwiaWF0IjoxNTU0MTc3NzM5LCJleHAiOjE1NTQyNjQxMzksIm5iZiI6MTU1NDE3NzczOSwianRpIjoiYzR5T0tyd2tvNHNYQ2JsdSIsInN1YiI6MTEyLCJwcnYiOiJiOTEyNzk5NzhmMTFhYTdiYzU2NzA0ODdmZmYwMWUyMjgyNTNmZTQ4In0.2S_6SDi9KPqgCUMrWV00tuFgOjyM-_ICkzpv0NRPIgc";
     @Override
     public int getLayoutId() {
         return R.layout.activity_xhttp;
@@ -29,7 +32,7 @@ public class XHttpActivity extends BaseActivity {
 
     @Override
     public void initData(Bundle savedInstanceState) {
-
+//http://192.168.11.237:8181/api/user/avatar
     }
 
     @Override
@@ -45,18 +48,22 @@ public class XHttpActivity extends BaseActivity {
 
 ///
 //get
+        //文件上传
         Map<String,Object> params = new HashMap<>();
         params.put("token",PHP_TOKEN);
-        XHttp.obtain().get(URL_HOST + "/api/order/getVipPriceList", params, new HttpCallBack<String>() {
+        params.put("avatar",new File(PATH,IMAGE_FILE_NAME));
+        XHttp.obtain().post( "http://192.168.11.237:8181/api/user/avatar", params, new HttpCallBack<String>() {
             @Override
             public void onSuccess(String o) {
                 Log.i("XHttpActivity","result onSuccess="+o.toString());
-                text.setText(""+o);
+                text.setText("onSuccess"+o);
             }
 
             @Override
             public void onFailed(String error) {
                 Log.i("XHttpActivity","result error = "+error);
+                Log.i("XHttpActivity","result error="+error);
+//                text.setText("result error="+error);
             }
         });
 
