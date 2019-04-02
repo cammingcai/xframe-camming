@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.youth.xf.BaseActivity;
 import com.youth.xf.R;
 import com.youth.xf.ui.adapter.MyFragmentPagerAdapter;
@@ -42,6 +43,8 @@ public class MainActivity extends BaseActivity  {
         fragments.add(new DemoFragment());
         fragments.add(new APIFragment());
 
+
+//        MainActivity activity = JSONObject.parseObject("",MainActivity.class);
 
     }
 
